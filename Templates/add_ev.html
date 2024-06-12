@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add EV Form</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333333; /* Light black */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #FFFFFF; /* White */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #6c5ce7; /* Purple */
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #4a3cb1; /* Darker purple */
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7; /* Purple */
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF; /* White */
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #4a3cb1; /* Darker purple */
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" action="{% url 'add_ev' %}">
+        {% csrf_token %}
+        <label for="evName">EV Name:</label>
+        <input type="text" id="evName" name="name">
+        <label for="evNumber">EV Number:</label>
+        <input type="text" id="evNumber" name="number">
+        <input type="submit" value="Add EV">
+    </form>
+</body>
+</html>

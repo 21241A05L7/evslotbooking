@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Stations Map</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+</head>
+<body>
+    <h1>EV Stations Available</h1>
+    <div id="mapid" style="width: 100%; height: 600px;"></div> <!-- Ensure the map container has a specific height -->
+
+    <!-- Safely pass JSON data -->
+    <script type="application/json" id="ev-stations-data">
+        {{ ev_stations_json|safe }}
+    </script>
+
+    <!-- Script to get user location and update the map -->
+    <script>
+        console.log("EV Stations Page Loaded"); // Debugging message
+
+        // Initialize the map and set its view to India
+        var map = L.map('mapid').setView([20.5937, 78.9629], 5);
+        console.log("Map initialized"); // Debugging message
+
+        // Set up the OpenStreetMap layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        console.log("Tile layer added"); // Debugging message
+
+        // Parse JSON data from the script tag
+        var evStationsData = document.getElementById('ev-stations-data').textContent;
+        console.log("EV Stations data:", evStationsData); // Debugging message
+
+        var evStations = JSON.parse(evStationsData);
+        console.log("Parsed EV Stations:", evStations); // Debugging message
+
+        var userLocation = null;
+
+        // Function to create a popup with navigation and booking options
+        function createPopupContent(station) {
+            return `<b>${station.name}</b><br>
+                    
+                    <button onclick="bookSlot('${station.name}')">Book a Slot</button>`;
+        }
+
+        // Add EV stations to the map
+        evStations.forEach(function(station) {
+            var marker = L.marker([station.latitude, station.longitude]).addTo(map)
+                .bindPopup(createPopupContent(station));
+
+            console.log(`Marker added: ${station.name}`); // Debugging message
+        });
+
+        // Define a red icon for the user's location
+        var redIcon = new L.Icon({
+            // iconUrl: 'https://chart.googleapis.com/chart?chst=d_map_pin_icon&chld=home|FF0000',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        // Get user location and add a red marker to the map
+        function addUserLocation() {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var userLat = position.coords.latitude;
+                var userLng = position.coords.longitude;
+
+                userLocation = [userLat, userLng];
+
+                var userMarker = L.marker(userLocation, { icon: redIcon }).addTo(map)
+                    .bindPopup('<b>Your Location</b>');
+
+                map.setView(userLocation, 12); // Set map view to user's location
+            }, function(error) {
+                console.error('Error getting user location:', error);
+                alert('Error getting user location. Please allow location access.');
+            });
+        }
+
+        // Function to navigate to a station from the user's location
+        // Function to navigate to a station from the user's location
+function navigateToStation(lat, lng) {
+    if (userLocation) {
+        // Create routing control
+        var control = L.Routing.control({
+            waypoints: [
+                L.latLng(userLocation[0], userLocation[1]), // User's location
+                L.latLng(lat, lng) // Station's location
+            ],
+            routeWhileDragging: true,
+            geocoder: L.Control.Geocoder.nominatim(),
+            lineOptions: {
+                styles: [{color: 'red', opacity: 0.6, weight: 6}]
+            },
+            show: false // Hide the routing control initially
+        }).addTo(map);
+
+        control.hide(); // Hide the control by default
+
+        // Show the control and zoom to the route when added to the map
+        control.on('routesfound', function(e) {
+            map.fitBounds(e.routes[0].bounds);
+            control.show();
+        });
+    } else {
+        if (confirm('Location access is required to show navigation. Do you want to allow location access?')) {
+            addUserLocation();
+        }
+    }
+}
+
+
+
+        // Function to navigate to a booking page
+        function bookSlot(stationName) {
+            var url = `/booking_page/${stationName}/`; 
+            console.log(" url entered ");// Adjust the URL to match your actual booking page URL
+            window.location.href = url;
+        }
+
+        // Call the function to get user location after the map loads
+        map.on('load', addUserLocation);
+    </script>
+</body>
+</html>

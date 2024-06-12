@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 70% white */
+            color: #333333; /* Light black */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h2 {
+            color: #6c5ce7; /* Purple */
+            text-align: center;
+            animation: slideDown 0.5s ease-out;
+            margin-top: 0;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        form {
+            background-color: #FFFFFF; /* White */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            margin: 20px auto;
+        }
+        label, input[type="text"], input[type="email"], input[type="password"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            border: 1px solid #6c5ce7; /* Purple */
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #4a3cb1; /* Darker purple */
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7; /* Purple */
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF; /* White */
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #4a3cb1; /* Darker purple */
+        }
+    </style>
+</head>
+<body>
+    
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <label for="phone">Phone No:</label>
+        <input type="text" id="phone" name="phone" required><br><br>
+        
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* 70% white */
+            color: #333333; /* Light black */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: #6c5ce7; /* Purple */
+            text-align: center;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        a {
+            color: #6c5ce7; /* Purple */
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: 2px solid #6c5ce7; /* Purple */
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            animation: fadeInUp 1s ease-in-out;
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        a:hover {
+            background-color: #6c5ce7; /* Purple */
+            color: #ffffff; /* White */
+        }
+
+        .profile-container {
+            background-color: #ffffff; /* White */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .profile-detail {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1 class="profile-detail">Name - {{ name }}</h1>
+        <h1 class="profile-detail">Email - {{ email }}</h1>
+        <h1 class="profile-detail">Phone - {{ phone }}</h1>
+        <a href="{% url 'change_password' %}">Change Password</a>
+    </div>
+</body>
+</html>

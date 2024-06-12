@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Distance</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333333; /* Light black */
+            color: #FFFFFF; /* White */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h1 {
+            color: #6c5ce7; /* Purple */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        form {
+            background-color: #FFFFFF; /* White */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            margin-bottom: 20px; /* Add margin-bottom for spacing between forms */
+            color: #333333; /* Light black text */
+        }
+        label, input[type="number"], input[type="text"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="number"], input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            border: 1px solid #6c5ce7; /* Purple */
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus, input[type="text"]:focus {
+            border-color: #4a3cb1; /* Darker purple */
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7; /* Purple */
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF; /* White */
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #4a3cb1; /* Darker purple */
+        }
+    </style>
+</head>
+<body>
+    <h1>GET EV STATIONS BY FOLLOWING</h1>
+    
+    <form id="kmForm" method="POST" action="{% url 'get_evStations_by_km' %}">
+        {% csrf_token %}
+        <label for="distance">Distance (in km):</label>
+        <input type="number" id="distance" name="distance" min="0" step="0.01" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <form method="post" action="{% url 'get_ev_stations_by_location' %}">
+        {% csrf_token %}
+        <label for="locationName">Enter location name :</label>
+        <input type="text" id="locationName" name="location" required>
+        <button type="submit">Get Coordinates</button>
+    </form>
+</body>
+</html>

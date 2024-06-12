@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333333; /* Light black */
+            color: #FFFFFF; /* White */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #FFFFFF; /* White */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        h1 {
+            background-color: #6c5ce7; /* Purple */
+            color: #FFFFFF; /* White */
+            margin-bottom: 20px;
+            padding: 10px 0; /* Adjust padding as needed */
+            border-radius: 5px;
+            text-align: center;
+        }
+        form {
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333; /* Dark gray */
+        }
+        input[type="text"],
+        input[type="number"],
+        button {
+            display: block;
+            margin-bottom: 10px;
+            width: calc(100% - 22px);
+            padding: 8px;
+            border: 1px solid #6c5ce7; /* Purple */
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #4a3cb1; /* Darker purple */
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7; /* Purple */
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF; /* White */
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #4a3cb1; /* Darker purple */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment for {{ station_name }}</h1>
+        <form action="{% url 'payment_success' %}" method="POST">
+            {% csrf_token %}
+            <label for="card-number">Card Number:</label>
+            <input type="text" id="card-number" name="card-number" required>
+
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+
+            <label for="cvv">CVV:</label>
+            <input type="number" id="cvv" name="cvv" required>
+
+            <button type="submit">Pay 20%</button>
+        </form>
+    </div>
+</body>
+</html>

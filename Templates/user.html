@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Location</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F5F5F5; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three columns */
+            gap: 20px;
+            padding: 20px;
+            background-color: #FFFFFF; /* White */
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 600px; /* Adjusted width for three columns */
+        }
+        .link, .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            height: 100px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #FFFFFF; /* White */
+            border: 1px solid #DDDDDD; /* Light gray border */
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333333; /* Dark gray text */
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.3s, transform 0.3s;
+            flex-direction: column;
+        }
+        .link:hover, .button:hover {
+            background-color: #F0F0F0; /* Light gray on hover */
+            transform: translateY(-2px);
+        }
+        .link img, .button img {
+            width: 30px; /* Icon size */
+            height: 30px; /* Icon size */
+            margin-bottom: 10px; /* Space between icon and text */
+        }
+        .share-location {
+            grid-column: span 3; /* Adjusted to span three columns */
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'manage_your_ev_vehicles' %}" class="link">
+            <img src="https://img.icons8.com/ios-filled/50/000000/maintenance.png" alt="Manage EV Vehicles">
+            Manage EV Vehicles
+        </a>
+        <a href="{% url 'get_ev_stations' %}" class="link">
+            <img src="https://img.icons8.com/ios-filled/50/000000/search.png" alt="Find Stations">
+            Find Stations
+        </a>
+        <a href="{% url 'view_bookings' %}" class="link">
+            <img src="https://img.icons8.com/ios-filled/50/000000/calendar-30.png" alt="View Bookings">
+            View Bookings
+        </a>
+        <a href="{% url 'manage_account' %}" class="link">
+            <img src="https://img.icons8.com/ios-filled/50/000000/user.png" alt="Profile">
+            Profile
+        </a>
+        <a href="{% url 'book_slot' %}" class="link">
+            <img src="https://img.icons8.com/ios-filled/50/000000/appointment-reminders.png" alt="Book Slot">
+            Book Slot
+        </a>
+        <a href="{% url 'find_evs' %}" class="link">
+            <img src="https://static.vecteezy.com/system/resources/previews/002/580/754/non_2x/ev-charging-station-black-glyph-icon-vector.jpg" alt="Station Roadmap">
+            Station Roadmap
+        </a>
+        <div class="share-location">
+            <button id="getLocationBtn" class="button">
+                <img src="https://img.icons8.com/ios-filled/50/000000/location-update.png" alt="Share Location">
+                Share Location
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // CSRF token function
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // Function to get location and send it to the backend
+        function getLocationAndSend() {
+            // Check if Geolocation is supported
+            if (navigator.geolocation) {
+                // Request the user's location
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Extract latitude and longitude from the position object
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    console.log(`Latitude: ${lat}, Longitude: ${lon}`); // Debugging message
+
+                    // Send the coordinates to the backend
+                    fetch('/save_user_location/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: JSON.stringify({latitude: lat, longitude: lon})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        alert('Location saved successfully.');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error saving location.');
+                    });
+                }, function(error) {
+                    console.error('Error occurred while retrieving location:', error);
+                    alert('Unable to retrieve your location.');
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        }
+
+        // Attach event listener to the button
+        document.getElementById('getLocationBtn').addEventListener('click', getLocationAndSend);
+    </script>
+</body>
+</html>

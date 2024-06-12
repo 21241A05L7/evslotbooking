@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book by Place</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333333; /* Light black */
+            color: #FFFFFF; /* White */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: #6c5ce7; /* Purple */
+            margin-bottom: 20px;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        form, a {
+            background-color: #FFFFFF; /* White */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            font-size: 18px;
+            text-decoration: none;
+            color: #6c5ce7; /* Purple */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #4a3cb1; /* Darker purple */
+        }
+
+        label, input[type="text"], button[type="submit"] {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            transition: color 0.3s, background-color 0.3s, border-color 0.3s;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 26px);
+            padding: 8px;
+            border: 1px solid #6c5ce7; /* Purple */
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4a3cb1; /* Darker purple */
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7; /* Purple */
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF; /* White */
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4a3cb1; /* Darker purple */
+        }
+
+        .icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    
+    <a href="{% url 'book_nearby' %}"><i class="fas fa-map-marker-alt icon"></i>Book Nearby</a>
+    <form action="{% url 'book_by_place' %}" method="post">
+        <h1>Book by Place</h1>
+        {% csrf_token %}
+        <label for="place">Place Name:</label>
+        <input type="text" id="location" name="location" required>
+        <button type="submit"><i class="fas fa-book icon"></i>Book</button>
+    </form>
+</body>
+</html>

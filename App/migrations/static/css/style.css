@@ -1,0 +1,10 @@
+/* static/myapp/css/style.css */
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+#mapid {
+    height: 600px;
+    width: 100%;
+}

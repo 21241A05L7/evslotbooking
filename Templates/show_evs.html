@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Electric Vehicles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #6c5ce7; /* Purple */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #333333; /* Light black */
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4; /* 70% white */
+        }
+        tr:nth-child(even) {
+            background-color: #e7e7e7; /* Light gray */
+        }
+        tr:hover {
+            background-color: #dcdcdc; /* Darker gray on hover */
+        }
+        a {
+            color: #6c5ce7; /* Purple */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Electric Vehicles</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Action</th>
+        </tr>
+        {% for ev in evs %}
+        <tr>
+            <td>{{ ev.name }}</td>
+            <td>{{ ev.number }}</td>
+            <td><a href="{% url 'delete_ev' ev.number %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

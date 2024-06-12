@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Slot</title>
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #333333; /* Light black */
+            color: #FFFFFF; /* White */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            background-color: #6c5ce7; /* Purple */
+            color: #FFFFFF; /* White */
+            margin-bottom: 20px;
+            padding: 10px 0; /* Adjust padding as needed */
+            border-radius: 5px;
+            text-align: center;
+        }
+        form {
+            background-color: #FFFFFF; /* White */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+            margin: auto; /* Center the form */
+        }
+        label, input[type="date"], input[type="time"], button {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="date"], input[type="time"], button {
+            width: calc(100% - 22px);
+            padding: 8px;
+            border: 1px solid #6c5ce7; /* Purple */
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="date"]:focus, input[type="time"]:focus {
+            border-color: #4a3cb1; /* Darker purple */
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7; /* Purple */
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF; /* White */
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:disabled {
+            background-color: #999999; /* Grey when disabled */
+            cursor: not-allowed;
+        }
+        button:hover:enabled {
+            background-color: #4a3cb1; /* Darker purple */
+        }
+    </style>
+    <script>
+        function enableBookingButton() {
+            document.getElementById('bookSlotButton').disabled = false;
+        }
+
+        function redirectToPaymentPage() {
+            // Simulate payment page navigation
+            window.location.href = "{% url 'payment_page' %}";
+        }
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('payment_success') && urlParams.get('payment_success') === 'true') {
+                enableBookingButton();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>BOOK SLOT IN - {{ station_name }}</h1>
+        <form action="{% url 'booking_page' station_name=station_name %}" method="POST">
+            {% csrf_token %}
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required>
+
+            <button type="button" onclick="redirectToPaymentPage()">Pay 20% to Book Slot</button>
+
+            <button type="submit" id="bookSlotButton" disabled>Book Slot</button>
+        </form>
+    </div>
+</body>
+</html>
